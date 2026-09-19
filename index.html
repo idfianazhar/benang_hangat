@@ -298,19 +298,19 @@
             background: #fffcf7;
             border: 4px solid #3b2a22;
             border-radius: 12px;
-            padding: 24px 30px;
+            padding: 24px 32px;
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 12px;
-            box-shadow: 0 14px 36px rgba(0, 0, 0, 0.85), inset 2px 2px 0 #fff;
+            gap: 14px;
+            box-shadow: 0 12px 32px rgba(0, 0, 0, 0.8), inset 2px 2px 0 #fff;
             opacity: 0;
             pointer-events: none;
-            transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+            transition: all 0.5s ease;
             z-index: 60;
             text-align: center;
-            max-width: 460px;
-            width: 90%;
+            max-width: 440px;
+            width: 88%;
         }
         #replay-card.active {
             opacity: 1;
@@ -398,32 +398,17 @@
                 </div>
             </div>
 
-            <!-- Replay Screen Card (Kartu Kenangan Nenek) -->
+            <!-- Replay Screen Card -->
             <div id="replay-card">
-                <div class="flex items-center gap-2 text-amber-700 text-xs sm:text-sm font-bold tracking-wider">
-                    <span>🧶</span>
-                    <span>BENANG HANGAT NENEK</span>
-                    <span>🐾</span>
+                <div class="text-amber-700 text-xs sm:text-sm font-bold tracking-widest uppercase">BENANG HANGAT NENEK</div>
+                <div class="w-16 h-0.5 bg-amber-400/60 my-0.5"></div>
+                <div class="text-stone-700 text-[11px] sm:text-xs italic leading-relaxed px-1 font-medium">
+                    "Mungkin raga kita harus terpisah oleh waktu, tetapi cinta yang dirajut dengan ketulusan tidak akan pernah pudar. Setiap helai benang ini adalah pelukanmu yang takkan pernah dingin."
                 </div>
-                <div class="h-0.5 w-16 bg-amber-200/80 rounded-full my-1"></div>
-                <div class="text-stone-700 text-[11px] sm:text-xs italic leading-relaxed font-pixel-text">
-                    "Jika suatu saat duniaku tertidur dan langkahku terhenti, jangan pernah merasa sendirian, Kuro kecilku...<br><br>
-                    Di setiap jalinan benang wol merah ini, tersimpan doa dan pelukan agar engkau selalu merasa hangat selamanya."
+                <div class="text-stone-500 text-[9px] tracking-wide mt-1">
+                    — Untuk kenangan manis yang hidup abadi di hati kita —
                 </div>
-                <div class="text-amber-800/80 text-[9px] sm:text-[10px] font-bold tracking-tight">
-                    — Nenek Asih, untuk Kuro tersayang
-                </div>
-
-                <!-- Kredit Pembuat ikanwhale -->
-                <div class="w-full pt-2 mt-1 border-t border-amber-900/10 flex flex-col items-center">
-                    <div class="flex items-center gap-1.5 text-[10px] sm:text-[11px] font-bold text-stone-800 bg-amber-100/70 px-3.5 py-1 rounded-full border border-amber-300/70 shadow-sm">
-                        <span>🐳</span>
-                        <span class="text-stone-600 font-medium text-[9px]">Dibuat oleh:</span>
-                        <span class="text-amber-900 font-pixel-title tracking-tight">ikanwhale</span>
-                    </div>
-                </div>
-
-                <button id="btn-replay" class="cozy-btn !text-[9px] !px-5 !py-3 mt-2 !bg-emerald-600 hover:!bg-emerald-500">
+                <button id="btn-replay" class="cozy-btn !text-[9px] !px-5 !py-3 mt-2 !bg-emerald-600 hover:!bg-emerald-700 transition-colors shadow-md">
                     <i class="fa-solid fa-rotate-left mr-1"></i> RAJUT KEMBALI KENANGAN
                 </button>
             </div>
@@ -797,6 +782,21 @@ const BGM = {
             setTimeout(() => { if (this.audio) this.audio.pause(); }, 400);
         }
         KomorebiSynth.stop();
+    },
+
+    restart() {
+        this.init();
+        if (this.audio) {
+            try {
+                this.audio.currentTime = 0;
+            } catch(e) {}
+        }
+        if (KomorebiSynth) {
+            KomorebiSynth.stop();
+            KomorebiSynth.step = 0;
+            KomorebiSynth.noteIndex = 0;
+        }
+        this.play();
     },
 
     setMute(mute) {
@@ -1739,9 +1739,10 @@ function setAct(act) {
                 showTutorial();
                 setTimeout(() => {
                     DialogueSys.play([
-                        "Hoaaam... Pagi yang cerah ya, Kuro.",
-                        "Masih ingat waktu Nenek menemukanmu kecil dulu? Kamu basah kuyup di teras depan...",
-                        "Kuro, mana mangkuk makanmu? Ayo sarapan dulu."
+                        "Hoaaam... Pagi yang cerah ya, Kuro sayang.",
+                        "Masih ingat waktu Nenek menemukanmu dulu? Kamu anak kucing kecil yang basah kuyup di teras depan...",
+                        "Sejak kamu datang, rumah tua yang sepi ini kembali terasa hangat dan hidup.",
+                        "Ayo sarapan dulu, Kuro. Mangkuk birumu sudah terisi makanan lezat."
                     ], "NENEK ASIH", () => {
                         setObjective('Makan dari mangkuk birumu [E]', 'bowl');
                     });
@@ -1749,20 +1750,27 @@ function setAct(act) {
             } else if (act === 2) {
                 setTimeout(() => {
                     DialogueSys.play([
-                        "Uhuk... uhuk... Angin sore mulai dingin.",
-                        "Aduh, benang merah Nenek menggelinding jatuh."
+                        "Uhuk... uhuk... Angin sore mulai bertiup dingin.",
+                        "Aduh, benang wol merah Nenek menggelinding jatuh ke sudut ruangan..."
                     ], "NENEK ASIH", () => {
                         setObjective('Dorong gulungan benang merah ke dekat Nenek [E]', 'yarn');
                     });
                 }, 1000);
             } else if (act === 3) {
                 setTimeout(() => {
-                    setObjective('Lompat ke kasur & tahan [P] untuk menghangatkan Nenek', 'grandma_bed');
+                    DialogueSys.play([
+                        "(Di luar, hujan turun begitu deras menerpa jendela kamar...)",
+                        "(Nenek tampak terbaring lemah dan kedinginan di bawah selimutnya.)"
+                    ], "SISTEM", () => {
+                        setObjective('Lompat ke kasur & tahan [P] untuk menghangatkan Nenek', 'grandma_bed');
+                    });
                 }, 1000);
             } else if (act === 4) {
                 setTimeout(() => {
                     DialogueSys.play([
-                        "(Pagi ini sangat sunyi. Tidak ada suara langkah kaki atau denting cangkir di dapur...)"
+                        "(Pagi ini terasa sangat sunyi...)",
+                        "(Tidak ada suara sendok berdenting di dapur, atau derit kursi goyang Nenek yang biasa menyapa pagi.)",
+                        "(Hanya ada syal wol merah tebal yang telah selesai dirajut terlipat rapi di atas nakas...)"
                     ], "SISTEM", () => {
                         setObjective('Ambil syal merah dari nakas samping tempat tidur [E]', 'scarf');
                     });
@@ -1770,12 +1778,10 @@ function setAct(act) {
             } else if (act === 5) {
                 setTimeout(() => {
                     DialogueSys.play([
-                        "Pagi berganti cerah. Sorot mentari lembut menembus jendela, menyinari helai-helai benang wol merah di atas kasur...",
-                        "Kuro meringkuk tenang di samping syal itu. Tiada lagi rasa dingin, tiada lagi rasa lelah untuk Nenek.",
-                        "Raga mungkin telah berpulang dalam keheningan yang damai...",
-                        "...namun cinta sejati tak pernah benar-benar pergi. Ia hidup abadi di setiap jalinan benang hangat yang pernah dirajut dengan kasih untuk kita.",
-                        "Selamat jalan, Nenek Asih. Terima kasih telah mencintai Kuro sepanjang hidupmu...",
-                        "— TAMAT —\nTerima kasih telah memainkan kisah ini.\nKarya: ikanwhale 🐳"
+                        "Musim demi musim akan silih berganti, dan angin dingin pasti akan kembali datang...",
+                        "Namun di bawah pelukan hangat cahaya mentari pagi di ranjang tua ini...",
+                        "Cinta tidak pernah pergi saat raga berhenti bernapas.",
+                        "Ia hidup abadi di setiap jalinan benang hangat yang pernah dirajut dengan kasih untuk kita."
                     ], "...", () => {
                         const replayCard = document.getElementById('replay-card');
                         if (replayCard) replayCard.classList.add('active');
@@ -1898,22 +1904,24 @@ function handleMeow() {
             setObjective('Panggil Nenek sekali lagi [M]', 'grandma_bed_silent');
             DialogueSys.play([
                 "Meow...?",
-                "(Nenek tidak bergerak. Suasana kamar terasa begitu sunyi dan dingin.)"
+                "(Nenek tidak bergerak. Suasana kamar terasa begitu sunyi dan dingin.)",
+                "(Kuro melangkah lebih dekat... biasanya Nenek langsung tersenyum membuka mata saat mendengar suaranya...)"
             ], "KURO");
         } else if (StoryState.meowCount === 2) {
             setObjective('Beri salam perpisahan terakhir [M]', 'grandma_bed_silent');
             DialogueSys.play([
                 "Meooww...?",
-                "(Kuro menyentuhkan hidung basahnya ke pipi Nenek... sedingin kaca jendela.)",
-                "(Kuro menempelkan telinganya ke dada Nenek... sunyi, tiada lagi detak jantung yang biasa berdegup hangat.)",
-                "(Kuro tersentak pedih... Nenek telah tiada. Nenek telah tertidur untuk selamanya.)"
+                "(Kuro menyentuhkan hidung basahnya ke pipi Nenek... terasa sedingin embun di kaca jendela.)",
+                "(Kuro menempelkan telinganya ke dada Nenek... sunyi. Tiada lagi detak jantung yang selalu berdegup hangat menemaninya.)",
+                "(Kuro tersentak pedih... Kuro menyadari segalanya... Nenek telah tiada. Nenek telah berpulang ke tempat yang damai.)"
             ], "KURO");
         } else if (StoryState.meowCount === 3) {
             setObjective('', null);
             DialogueSys.play([
                 "Meeooowww......",
-                "(Kuro menjilati jemari Nenek yang kaku dengan penuh kasih...)",
-                "(Lalu Kuro melompat naik ke kasur, memeluk Nenek dan syal merahnya. Di wajah Nenek, tersungging senyuman damai tanpa rasa sakit.)"
+                "(Dengan penuh kasih dan rasa terima kasih, Kuro menjilati jemari Nenek yang kaku sebagai salam perpisahan terindah...)",
+                "(Lalu Kuro melompat naik ke kasur, meringkuk memeluk Nenek dan syal merahnya erat-erat.)",
+                "(Di wajah Nenek, tersungging senyuman damai tanpa rasa sakit. 'Tidurlah yang tenang, Nenek... Kuro akan selalu menjaga kehangatanmu.')"
             ], "KURO", () => {
                 setTimeout(() => setAct(5), 2000);
             });
@@ -1988,10 +1996,13 @@ function processAction() {
             Sound.bell();
             spawnParticles(activeInteractable.x + 9, activeInteractable.y + 4, '#f4a261', 8);
             setObjective('', null);
-            DialogueSys.play(["Nyam nyam... Kuro suka makanan ini."], "KURO", () => {
+            DialogueSys.play([
+                "Nyam nyam... Makanan buatan Nenek selalu yang paling lezat.",
+                "(Kuro menatap Nenek dengan mata berbinar penuh rasa terima kasih.)"
+            ], "KURO", () => {
                 DialogueSys.play([
-                    "Pintar... Sekarang kacamata Nenek di mana ya?",
-                    "Tanpa kacamata, pandangan Nenek agak buram untuk merajut."
+                    "Pintar... Kamu tumbuh begitu sehat dan lincah, Kuro kesayangan Nenek.",
+                    "Sekarang di mana ya kacamata baca Nenek? Pandangan Nenek agak buram untuk merajut pola syal ini."
                 ], "NENEK ASIH", () => {
                     setObjective('Ambil kacamata di atas lemari cokelat [E]', 'glasses');
                 });
@@ -2022,9 +2033,10 @@ function processAction() {
 
             setObjective('', null);
             DialogueSys.play([
-                "Wah, terima kasih banyak, Kuro sayang...",
-                "Sekarang Nenek bisa melihat pola rajutan dengan jelas lagi.",
-                "Maukah kamu menemani Nenek di sini sebentar?"
+                "Wah, kacamata Nenek... Terima kasih banyak, Kuro sayang.",
+                "(Nenek mengusap lembut kepala Kuro, jemarinya yang hangat mengelus di balik telinganya.)",
+                "Sekarang Nenek bisa melihat wajah mungilmu dengan jelas lagi.",
+                "Maukah kamu menemani Nenek di sini sebentar? Kursi goyang ini terasa sepi jika tidak ada kamu di samping Nenek."
             ], "NENEK ASIH", () => {
                 setObjective('Lompat ke kursi goyang, tahan [P] untuk mendengkur', 'grandma_chair');
             });
@@ -2041,9 +2053,10 @@ function processAction() {
                 StoryState.yarnFound = true;
                 setObjective('', null);
                 DialogueSys.play([
-                    "Terima kasih, Kuro kecilku...", 
-                    "Maaf ya rajutan Nenek agak lambat. Jemari Nenek makin hari makin kaku...",
-                    "Tapi syal wol merah tebal ini harus selesai sebelum musim dingin tiba, khusus untukmu..."
+                    "Terima kasih, anak baikku...", 
+                    "Maaf ya rajutan Nenek makin hari makin lambat. Jemari Nenek sering gemetar dan kram...",
+                    "Tapi syal wol merah ini harus selesai sebelum musim dingin tiba.",
+                    "Nenek ingin memastikan tubuh mungilmu selalu hangat dan terlindungi, apa pun yang terjadi esok hari..."
                 ], "NENEK ASIH", () => {
                     setTimeout(() => setAct(3), 1600);
                 });
@@ -2062,7 +2075,9 @@ function processAction() {
             StoryState.scarfDelivered = true;
             setObjective('', null);
             DialogueSys.play([
-                "(Syal wol merah itu terasa sangat tebal dan hangat... Kuro menyelimutkannya dengan hati-hati menutupi tubuh Nenek.)",
+                "(Syal wol merah itu terasa begitu tebal, lembut, dan harum aroma lavender kesukaan Nenek...)",
+                "(Di ujung syal, tersulam bentuk telapak kaki kucing mungil yang dirajut dengan sisa-sisa tenaga Nenek...)",
+                "(Kuro menyelimutkannya dengan perlahan menutupi tangan dan pundak Nenek yang dingin.)",
                 "(Panggillah Nenek dengan mengeong [M].)"
             ], "SISTEM", () => {
                 setObjective('Gunakan [M] untuk memanggil Nenek', 'grandma_bed_silent');
@@ -2088,8 +2103,9 @@ function processAction() {
                 if (currentAct === 1 && StoryState.glassesGiven && StoryState.fed) {
                     setObjective('', null);
                     DialogueSys.play([
-                        "Hangat sekali... Dengkuranmu selalu membuat hati Nenek tenang.",
-                        "Nenek mulai merajut syal merah ini ya..."
+                        "Hangat sekali... Dengkuranmu selalu menjadi obat paling menenangkan di dunia ini.",
+                        "Sejak rumah ini sunyi ditinggal pergi, kehadiranmulah yang mengembalikan tawa Nenek.",
+                        "Nenek mulai merajut syal merah ini ya... rajutan cinta khusus untuk Kuro."
                     ], "NENEK ASIH", () => {
                         setTimeout(() => setAct(2), 1500);
                     });
@@ -2097,9 +2113,10 @@ function processAction() {
                 else if (currentAct === 3) {
                     setObjective('', null);
                     DialogueSys.play([
-                        "Kuro... Terima kasih sudah menghangatkan Nenek malam ini...",
-                        "Syal merahmu hampir selesai di samping kasur...",
-                        "Janji ya anak baik, jangan kedinginan kalau suatu saat Nenek tidur lama..."
+                        "Kuro... Terima kasih sudah memeluk dan menghangatkan Nenek malam ini...",
+                        "(Nenek mengusap punggung Kuro perlahan dengan sisa tenaganya yang lemah.)",
+                        "Syal merahmu sudah hampir selesai terlipat di atas nakas...",
+                        "Kuro sayang... berjanji pada Nenek ya, jangan kedinginan dan jangan merasa sendiri jika suatu saat Nenek tertidur begitu lama..."
                     ], "NENEK ASIH", () => {
                         setTimeout(() => setAct(4), 2000);
                     });
@@ -2590,6 +2607,10 @@ document.getElementById('btn-replay').onclick = () => {
     StoryState.scarfDelivered = false;
     StoryState.meowCount = 0;
     player.hidden = false;
+
+    // Reset dan putar ulang musik Komorebi dari nada pertama
+    BGM.restart();
+
     setAct(1);
 };
 
