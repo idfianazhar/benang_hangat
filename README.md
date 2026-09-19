@@ -20,12 +20,3 @@ Buka file `index.html` langsung di peramban (browser) modern favorit Anda:
 # Atau jalankan server lokal sederhana
 npx serve .
 ```
-
----
-
-## 🌐 Deployment (Vercel)
-
-Proyek ini telah dikonfigurasi siap deploy ke **Vercel** sebagai static web application.
-- Cukup hubungkan repositori ini ke akun [Vercel](https://vercel.com/new).
-- Framework Preset: **Other** / Static Site.
-- Output Directory: `./` (Root).
