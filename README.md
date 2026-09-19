@@ -8,7 +8,6 @@ Game pixel-art bertema hangat dan nostalgia tentang merajut kenangan, kasih saya
 
 - **Visual Pixel Art Estetik**: Tampilan bernuansa CRT monitor retro, palet warna hangat, dan font pixel retro (*Press Start 2P* & *Pixelify Sans*).
 - **Audio Synthesizer Terintegrasi**: Menggunakan Web Audio API untuk menghasilkan melodi chord dan arpeggio yang menenangkan (*m-taku Komorebi motif*) tanpa ketergantungan file eksternal wajib.
-- **Dukungan BGM Kustom**: Mendukung file audio eksternal `komorebi.mp3` atau upload manual audio dari perangkat.
 - **Interaksi Sentuh & Responsif**: Mendukung gameplay di layar desktop maupun perangkat mobile/layar sentuh.
 
 ---
